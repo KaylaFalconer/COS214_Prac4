@@ -1,40 +1,62 @@
 #include <string>
 using namespace std;
-
+#include <iostream>	
 #include "Patient.h"
 #include "VetSystem.h"
 #include "State.h"
 #include "Vet.h"
+#include "Admitted.h"
 
-Patient::Patient(const string& id, const string& name, const string& type, int age) {
+Patient::Patient(const string& id, const string& name, const string& type, int age) :id(id), type(type), age(age), Vet(name) {
+	this->state=new Admitted();
 }
 
 void Patient::print() const {
-	throw "Not yet implemented";
+	std::cout<<"Patient Name: "<<name<<" (ID: "<<id<<", Type: "<<type<<",Age: "<<age<<")\n"<<"Current state: "<<state->getStateName()<<std::endl;
 }
 
 void Patient::setState(State* state) {
-	throw "Not yet implemented";
+	if(state!=nullptr){
+		delete this->state;
+	}
+	this->state = state;
+	cout<<"Patient "<<name<<" state changed to "<<state->getStateName()<<std::endl;
 }
 
-void Patient::examine() {
-	throw "Not yet implemented";
+void Patient::advance() {
+	state->handle(this);
 }
 
-void Patient::treat() {
-	throw "Not yet implemented";
-}
-
-void Patient::discharge() {
-	throw "Not yet implemented";
+void Patient::readmit() {
+	if(getStateName() == "Discharged") {
+		setState(new Admitted());
+		cout<<"Patient "<<name<<" has been readmitted."<<std::endl;
+	} else {
+		cout<<"Patient "<<name<<" cannot be readmitted as they are not discharged."<<std::endl;
+	}
 }
 
 string Patient::getStateName() const {
-	throw "Not yet implemented";
+	return state->getStateName();
 }
 
+string Patient::getName() const {
+	return name;
+}
+
+string Patient::getId() const {
+	return id;
+}
+
+
 bool Patient::hasEmergencyPriority() const {
-	throw "Not yet implemented";
+		
+}
+
+Patient::~Patient() {
+	if(state != nullptr) {
+		delete state;
+	}
 }
 
 

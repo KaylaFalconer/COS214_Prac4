@@ -4,20 +4,20 @@ using namespace std;
 #include "Admitted.h"
 #include "Patient.h"
 #include "State.h"
+#include "UnderExamination.h"
 
-void Admitted::examine(Patient& patient) {
-	throw "Not yet implemented";
+
+Admitted::Admitted() : State("Admitted") {}
+
+void Admitted::handle(Patient* patient){
+	patient->setState(new UnderExamination());
 }
 
-void Admitted::treat(Patient& patient) {
-	throw "Not yet implemented";
+std::string Admitted::getStateName() const{
+	return "Admitted";
 }
 
-void Admitted::discharge(Patient& patient) {
-	throw "Not yet implemented";
-}
+Admitted::~Admitted() {}
 
-string Admitted::getStateName() const {
-	throw "Not yet implemented";
-}
+
 

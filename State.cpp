@@ -5,8 +5,8 @@ using namespace std;
 #include "Patient.h"
 
 
-
-
+State::State(const std::string& stateName) : stateName(stateName) {}
+State::~State() {}
 
 
 

@@ -1,23 +1,17 @@
 #include <string>
 using namespace std;
-
+#include <iostream>
 #include "Discharged.h"
 #include "Patient.h"
 #include "State.h"
 
-void Discharged::examine(Patient& patient) {
-	throw "Not yet implemented";
+Discharged::Discharged() : State("Discharged") {}	
+
+void Discharged::handle(Patient* patient) {
+	std::cout<<"Patient "<<patient->getName()<<" (ID: "<<patient->getId()<<") has been discharged."<<std::endl;
+}
+std::string Discharged::getStateName() const {
+	return "Discharged";
 }
 
-void Discharged::treat(Patient& patient) {
-	throw "Not yet implemented";
-}
-
-void Discharged::discharge(Patient& patient) {
-	throw "Not yet implemented";
-}
-
-string Discharged::getStateName() const {
-	throw "Not yet implemented";
-}
-
+Discharged::~Discharged() {}
