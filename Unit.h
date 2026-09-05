@@ -22,7 +22,7 @@ class Unit: public Vet
 
 		void print() const override;
 
-		Iterator* createIterator();
+		Iterator* createFullIterator();
 		Iterator* createEmergencyPriorityIterator();
 
 		bool hasEmergencyPriority() const override;

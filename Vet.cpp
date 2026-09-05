@@ -4,12 +4,10 @@
 using namespace std;
 
 Vet::Vet(const string& name) {
+	this->name;
 }
 
 string Vet::getName() const{
 	return this->name;
 }
-
-
-
 

@@ -16,7 +16,7 @@ class Vet
 		virtual void print() const = 0;
 		virtual bool hasEmergencyPriority() const = 0;
 
-		virtual ~Vet();
+		virtual ~Vet() {}
 };
 
 #endif
