@@ -4,7 +4,7 @@
 using namespace std;
 
 Vet::Vet(const string& name) {
-	this->name;
+	this->name = name;
 }
 
 string Vet::getName() const{

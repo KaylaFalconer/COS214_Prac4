@@ -49,12 +49,14 @@ void VetSystem::showEmergencyPriorityPatients()
 	delete emergency;
 }
 
-void VetSystem::processPatient(Patient *patient)
+void VetSystem::processPatient(Patient* patient)
 {
-	throw "Not yet implemented";
+	patient->examine();
+	patient->treat();
+	patient->discharge();
 }
 
 VetSystem::~VetSystem()
 {
-	throw "Not yet implemented";
+	delete this->root;
 }

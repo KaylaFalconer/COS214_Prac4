@@ -14,6 +14,7 @@ class ContinuousMonitoring: public Decorator
 		ContinuousMonitoring(Vet* patient, int interval);
 
 		void print() const override;
+		virtual ~ContinuousMonitoring() {}
 };
 
 #endif

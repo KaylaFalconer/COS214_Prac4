@@ -1,4 +1,5 @@
 #include <string>
+#include <iostream>
 using namespace std;
 
 #include "Patient.h"
@@ -6,35 +7,45 @@ using namespace std;
 #include "State.h"
 #include "Vet.h"
 
-Patient::Patient(const string& id, const string& name, const string& type, int age) {
+Patient::Patient(const string& id, const string& name, const string& type, int age) : Vet(name) {
+	this->id = id;
+	this->type = type;
+	this->age = age;
+	this->state = nullptr;
 }
 
 void Patient::print() const {
-	throw "Not yet implemented";
+	std::cout << "Patient: -- " << this->getName() << " -- " << this->type << " -- " << this->age << std::endl;
 }
 
 void Patient::setState(State* state) {
-	throw "Not yet implemented";
+	if (state)
+	{
+		this->state = state;
+	}
 }
 
 void Patient::examine() {
-	throw "Not yet implemented";
+	this->state->examine(*this);
 }
 
 void Patient::treat() {
-	throw "Not yet implemented";
+	this->state->treat(*this);
 }
 
 void Patient::discharge() {
-	throw "Not yet implemented";
+	this->state->discharge(*this);
 }
 
 string Patient::getStateName() const {
-	throw "Not yet implemented";
+	return this->state->getStateName();
 }
 
 bool Patient::hasEmergencyPriority() const {
-	throw "Not yet implemented";
+	return false;
 }
 
-
+Patient::~Patient()
+{
+	delete this->state;
+}
