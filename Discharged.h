@@ -9,11 +9,10 @@ using namespace std;
 class Discharged: public State
 {
 	public:
-		void examine(Patient& patient) override;
-		void treat(Patient& patient) override;
-		void discharge(Patient& patient) override;
-		
-		string getStateName() const override;
+		Discharged();
+		void handle(Patient* patient) override;
+		~Discharged();
+		std::string getStateName() const override;
 };
 
 #endif

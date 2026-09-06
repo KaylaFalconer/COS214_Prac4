@@ -4,3 +4,5 @@ using namespace std;
 #include "VetSystem.h"
 #include "Vet.h"
 
+Iterator::~Iterator() {
+}

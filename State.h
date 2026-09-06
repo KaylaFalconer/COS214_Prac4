@@ -8,13 +8,13 @@ class Patient;
 
 class State
 {
+	private:
+		string stateName;
 	public:
-		virtual void examine(Patient& patient) = 0;
-		virtual void treat(Patient& patient) = 0;
-		virtual void discharge(Patient& patient) = 0;
 		
+		virtual void handle(Patient* patient) = 0;
 		virtual string getStateName() const = 0;
-
+		State(const std::string& stateName);
 		virtual ~State();
 };
 

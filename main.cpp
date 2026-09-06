@@ -1,10 +1,34 @@
 #include "VetSystem.h"
 #include "Patient.h"
 #include "Unit.h"
-
+#include <iostream>
 using namespace std;
 
 int main() {
+
+    std::cout<<"----------PATIENT STATE CHANGES DEMO---------------"<<std::endl;
+    // Create a patient
+    Patient* oreo2 = new Patient("P001", "Oreo", "Dog", 3);
+    oreo2->print();
+
+    std::cout << "\n--- Advancing through treatment ---\n";
+    oreo2->advance();   // Admitted to UnderExamination
+    oreo2->advance();   // UnderExamination to InTreatment
+    oreo2->advance();   // InTreatment to Discharged
+    oreo2->advance();   // Discharged to cannot advance
+
+    std::cout << "\n--- Re‑admitting the patient ---\n";
+    oreo2->readmit();   // Discharged to Admitted
+    oreo2->print();
+
+    std::cout << "\n--- Advancing again (new visit) ---\n";
+    oreo2->advance();   // Admitted to UnderExamination
+    oreo2->advance();   // UnderExamination to InTreatment
+    oreo2->advance();   // InTreatment to Discharged
+
+    delete oreo2;
+
+    std::cout<<"AZOLILE TESTING VET SYSTEM"<<std::endl;
     Unit* vetHospital = new Unit("Veterinary Hospital");
     Unit* emergencyDep = new Unit("Emergency Department");
     Unit* treatment1 = new Unit("Treatment Room 1");

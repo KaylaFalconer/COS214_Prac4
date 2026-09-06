@@ -21,12 +21,13 @@ class Patient: public Vet
 
 		void print() const override;
 		void setState(State* state);
+		void advance();
 
-		void examine();
-		void treat();
-		void discharge();
 
-		string getStateName() const;
+		std::string getStateName() const;
+		std::string getId() const;
+		std::string getName() const;
+		void readmit();
 		bool hasEmergencyPriority() const override;
 
 		virtual ~Patient();
