@@ -13,7 +13,7 @@ Patient::Patient(const string& id, const string& name, const string& type, int a
 }
 
 void Patient::print() const {
-	std::cout<<"Patient Name: "<<name<<" (ID: "<<id<<", Type: "<<type<<",Age: "<<age<<")\n"<<"Current state: "<<state->getStateName()<<endl;
+	std::cout<<"Patient Name: "<<name<<" (ID: "<<id<<", Type: "<<type<<", Age: "<<age<<")\n"<<"Current state: "<<state->getStateName()<<endl;
 }
 
 void Patient::advance() {
@@ -53,10 +53,10 @@ void Patient::readmit() {
 	}
 }
 
-std::string Patient::getName() const {
+string Patient::getName() const {
 	return name;
 }
 
-std::string Patient::getId() const {
+string Patient::getId() const {
 	return id;
 }
