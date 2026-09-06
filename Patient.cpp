@@ -8,7 +8,7 @@ using namespace std;
 #include "Vet.h"
 #include "Admitted.h"
 
-Patient::Patient(const string& id, const string& name, const string& type, int age) :id(id), type(type), age(age), Vet(name) {
+Patient::Patient(const string& id, const string& name, const string& type, int age) :Vet(name), id(id), type(type), age(age) {
 	this->state=new Admitted();
 }
 

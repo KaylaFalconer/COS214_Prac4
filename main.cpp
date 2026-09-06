@@ -27,39 +27,43 @@ int main() {
     Patient* lucky = new Patient("014", "Lucky", "Felis catus -> Cat", 3);
     VetSystem vs(vetHospital);
 
-    treatment1->add(oreo);
+    Vet* isolationLucky = new Isolation(lucky, "Terminally ill and possibly contagious. Rabies as well.");
+    cout << "\nLucky in isolation: \n\t"; isolationLucky->print(); cout << endl;
+
+    Vet* decorateBuddy = new Isolation(buddy, "Bird Flu spread being contained.");
+    decorateBuddy = new ContinuousMonitoring(decorateBuddy, 4);
+    decorateBuddy = new EmergencyPriority(decorateBuddy, 3);
+    cout << "\nBuddy in Emergency, Under continuous monitoring & in Isolation: \n\t"; decorateBuddy->print(); cout << endl;
+
+    Vet* emergencyOreo = new EmergencyPriority(oreo, 6);
+    cout << "\nOreo in emergency: \n\t"; emergencyOreo->print(); cout << endl;
+
+    treatment1->add(emergencyOreo);
     treatment1->add(max);
-    treatment2->add(buddy);
+    treatment2->add(decorateBuddy);
     emergencyDep->add(treatment1);
+    emergencyDep->add(treatment2);
     
     theatre1->add(milo);
     surgeryDep->add(theatre1);
 
-    wardA->add(lucky);
+    wardA->add(isolationLucky);
     generalCare->add(wardA);
 
     vetHospital->add(emergencyDep);
     vetHospital->add(surgeryDep);
     vetHospital->add(generalCare);
 
-    vs.processPatient(oreo);
-    vs.processPatient(buddy);
-    vs.processPatient(lucky);
-
-    Vet* isolationLucky = new Isolation(lucky, "Terminally ill and possibly contagious. Rabies as well.");
-    Vet* decorateBuddy = new Isolation(buddy, "Bird Flu spread being contained.");
-    decorateBuddy = new ContinuousMonitoring(decorateBuddy, 4);
-    decorateBuddy = new EmergencyPriority(decorateBuddy, 3);
-    Vet* oreo = new EmergencyPriority(oreo, 6);
+    
 
     cout << "--- Print All (Whole Tree Structure) ---" << endl;
-    vs.printAll();
+    vs.printAll(); cout << endl;
 
     cout << "--- Show All Patients ---" << endl;
-    vs.showAllPatients();
+    vs.showAllPatients(); cout << endl;
 
     cout << "--- Show Emergency Priority Patients ---" << endl;
-    vs.showEmergencyPriorityPatients();
+    vs.showEmergencyPriorityPatients(); cout << endl;
     
     std::cout<<"--------------------RUNTIME SCENARIO 1-----------------------"<<std::endl;
     // Build a fresh hierarchy

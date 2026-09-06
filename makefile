@@ -1,4 +1,4 @@
-TARGET=main
+TARGET=taskforge
 FLAGS= -g -std=c++11 -Werror -Wall
 CXX = g++
 OBJ_DIR=obj
@@ -11,7 +11,7 @@ all : $(TARGET)
 $(TARGET): $(OBJECTS)
 	$(CXX) $(FLAGS) $(OBJECTS) -o $(TARGET)
 
-$(OBJ_DIR)/%.o: src/%.cpp
+$(OBJ_DIR)/%.o: %.cpp
 	mkdir -p $(OBJ_DIR)
 	$(CXX) $(FLAGS) -c $< -o $@
 
