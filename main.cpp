@@ -9,6 +9,117 @@ using namespace std;
 
 int main() {
 
+    std::cout<<"-----------TESTING VET SYSTEM-------------"<<std::endl;
+    Unit* vetHospital = new Unit("Veterinary Hospital");
+    Unit* emergencyDep = new Unit("Emergency Department");
+    Unit* treatment1 = new Unit("Treatment Room 1");
+    Unit* treatment2 = new Unit("Treatment Room 2");
+    Unit* surgeryDep = new Unit("Surgery Department");
+    Unit* theatre1 = new Unit("Theatre 1");
+    Unit* generalCare = new Unit("General Care");
+    Unit* wardA = new Unit("Ward A");
+    Patient* oreo = new Patient("010", "Oreo", "Canis lupus familiaris", 4);
+    Patient* max = new Patient("011", "Max", "Felis catus", 2);
+    Patient* buddy = new Patient("012", "Buddy", "Psittacus", 5);
+    Patient* milo = new Patient("013", "Milo", "Canis lupus familiaris", 1);
+    Patient* lucky = new Patient("014", "Lucky", "Felis catus", 3);
+
+    treatment1->add(oreo);
+    treatment1->add(max);
+    treatment2->add(buddy);
+    emergencyDep->add(treatment1);
+    
+    theatre1->add(milo);
+    surgeryDep->add(theatre1);
+
+    wardA->add(lucky);
+    generalCare->add(wardA);
+
+    vetHospital->add(emergencyDep);
+    vetHospital->add(surgeryDep);
+    vetHospital->add(generalCare);
+
+    std::cout<<"--------------------RUNTIME SCENARIO 1-----------------------"<<std::endl;
+    // Build a fresh hierarchy
+    Unit* clinic = new Unit("City Clinic");
+    Unit* consultRoom = new Unit("Consultation Room");
+    Unit* treatmentArea = new Unit("Treatment Area");
+
+    // Create some patients
+    Patient* rocky = new Patient("R001", "Rocky", "Dog", 3);
+    Patient* whiskers = new Patient("R002", "Whiskers", "Cat", 2);
+    Patient* polly = new Patient("R003", "Polly", "Parrot", 1);
+
+    // Decorate Rocky with EmergencyPriority (level 4)
+    Vet* rockyPriority = new EmergencyPriority(rocky, 4);
+
+    // Add to the structure
+    consultRoom->add(rockyPriority);
+    consultRoom->add(whiskers);
+    treatmentArea->add(polly);
+
+    clinic->add(consultRoom);
+    clinic->add(treatmentArea);
+
+    // ---- Phase 1: Traversal and state change ----
+    std::cout << "\n--- Phase 1: Initial state and traversal ---\n";
+    FullIterator* it1 = new FullIterator(clinic);
+    std::cout << "All patients initially:\n";
+    while (it1->hasNext()) {
+        Vet* v = it1->next();
+        v->print();  // Rocky will show priority level
+    }
+    delete it1;
+
+    // Change Rocky's state: Admitted to UnderExamination to InTreatment
+    std::cout << "\n--- Changing Rocky's state (advance twice) ---\n";
+    rocky->advance();  // Admitted to UnderExamination
+    rocky->advance();  // UnderExamination to InTreatment
+    rocky->print();    // shows new state
+
+    // ---- Phase 2: Traversal after state change, but before structure change ----
+    std::cout << "\n--- Phase 2: Traversal after state change (state is now InTreatment) ---\n";
+    FullIterator* it2 = new FullIterator(clinic);
+    while (it2->hasNext()) {
+        Vet* v = it2->next();
+        v->print();  // Rocky's print will show InTreatment state
+    }
+    delete it2;
+
+    // ---- Phase 3: Structure change during an ongoing snapshot iteration ----
+    std::cout << "\n--- Phase 3: Structure change during snapshot traversal ---\n";
+    // Create a new iterator (snapshot taken now)
+    FullIterator* it3 = new FullIterator(clinic);
+    std::cout << "First two patients from snapshot:\n";
+    if (it3->hasNext()) { it3->next()->print(); }
+    if (it3->hasNext()) { it3->next()->print(); }
+
+    // Now change structure: add a new patient to the clinic
+    Patient* newbie = new Patient("R004", "Newbie", "Hamster", 1);
+    clinic->add(newbie);
+    std::cout << "\nAdded new patient 'Newbie' to the clinic during traversal.\n";
+
+    // Continue the same iterator
+    std::cout << "Remaining patients from the snapshot (Newbie will NOT appear):\n";
+    while (it3->hasNext()) {
+        Vet* v = it3->next();
+        v->print();
+    }
+    delete it3;
+
+    // Show that a new iterator will see Newbie
+    std::cout << "\nNow a fresh iterator (sees Newbie because it's a new snapshot):\n";
+    FullIterator* it4 = new FullIterator(clinic);
+    while (it4->hasNext()) {
+        Vet* v = it4->next();
+        v->print();
+    }
+    delete it4;
+    delete clinic; 
+
+    std::cout<<"\n\n\n"<<std::endl;
+
+
     std::cout<<"----------PATIENT STATE CHANGES DEMO---------------"<<std::endl;
     // Create a patient
     Patient* oreo2 = new Patient("P001", "Oreo", "Dog", 3);
@@ -65,34 +176,6 @@ int main() {
     std::cout << "\n--- Emergency priority patients ---\n";
     demoSystem.showEmergencyPriorityPatients();
 
-    std::cout<<"-----------TESTING VET SYSTEM-------------"<<std::endl;
-    Unit* vetHospital = new Unit("Veterinary Hospital");
-    Unit* emergencyDep = new Unit("Emergency Department");
-    Unit* treatment1 = new Unit("Treatment Room 1");
-    Unit* treatment2 = new Unit("Treatment Room 2");
-    Unit* surgeryDep = new Unit("Surgery Department");
-    Unit* theatre1 = new Unit("Theatre 1");
-    Unit* generalCare = new Unit("General Care");
-    Unit* wardA = new Unit("Ward A");
-    Patient* oreo = new Patient("010", "Oreo", "Canis lupus familiaris", 4);
-    Patient* max = new Patient("011", "Max", "Felis catus", 2);
-    Patient* buddy = new Patient("012", "Buddy", "Psittacus", 5);
-    Patient* milo = new Patient("013", "Milo", "Canis lupus familiaris", 1);
-    Patient* lucky = new Patient("014", "Lucky", "Felis catus", 3);
 
-    treatment1->add(oreo);
-    treatment1->add(max);
-    treatment2->add(buddy);
-    emergencyDep->add(treatment1);
-    
-    theatre1->add(milo);
-    surgeryDep->add(theatre1);
-
-    wardA->add(lucky);
-    generalCare->add(wardA);
-
-    vetHospital->add(emergencyDep);
-    vetHospital->add(surgeryDep);
-    vetHospital->add(generalCare);
     return 0;
 }
