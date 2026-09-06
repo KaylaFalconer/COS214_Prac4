@@ -15,6 +15,7 @@ class EmergencyPriority: public Decorator
 
 		bool hasEmergencyPriority() const override;
 		void print() const override;
+		virtual ~EmergencyPriority() {}
 };
 
 #endif

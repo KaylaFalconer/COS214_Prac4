@@ -1,6 +1,7 @@
 #include <string>
+#include <iostream>
 using namespace std;
-#include <iostream>	
+
 #include "Patient.h"
 #include "VetSystem.h"
 #include "State.h"
@@ -15,6 +16,11 @@ void Patient::print() const {
 	std::cout<<"Patient Name: "<<name<<" (ID: "<<id<<", Type: "<<type<<",Age: "<<age<<")\n"<<"Current state: "<<state->getStateName()<<std::endl;
 }
 
+void Patient::advance() {
+	if(state != nullptr) {
+		state->handle(this);
+	}
+}
 void Patient::setState(State* state) {
 	if(state!=nullptr){
 		delete this->state;
@@ -23,8 +29,18 @@ void Patient::setState(State* state) {
 	cout<<"Patient "<<name<<" state changed to "<<state->getStateName()<<std::endl;
 }
 
-void Patient::advance() {
-	state->handle(this);
+std::string Patient::getStateName() const {
+	return this->state->getStateName();
+}
+
+bool Patient::hasEmergencyPriority() const {
+	return false;
+}
+
+Patient::~Patient() {
+	if(state != nullptr) {
+		delete state;
+	}
 }
 
 void Patient::readmit() {
@@ -36,27 +52,11 @@ void Patient::readmit() {
 	}
 }
 
-string Patient::getStateName() const {
-	return state->getStateName();
-}
-
-string Patient::getName() const {
+std::string Patient::getName() const {
 	return name;
 }
 
-string Patient::getId() const {
+std::string Patient::getId() const {
 	return id;
 }
-
-
-bool Patient::hasEmergencyPriority() const {
-		
-}
-
-Patient::~Patient() {
-	if(state != nullptr) {
-		delete state;
-	}
-}
-
 

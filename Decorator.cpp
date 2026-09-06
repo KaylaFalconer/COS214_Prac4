@@ -1,17 +1,17 @@
+#include <iostream>
 using namespace std;
 
 #include "Decorator.h"
 #include "Vet.h"
 
-Decorator::Decorator(Vet* patient) {
-}
-
-void Decorator::print() const {
-	throw "Not yet implemented";
+Decorator::Decorator(Vet* patient) : Vet(patient->getName()) {
+	this->patient = patient;
 }
 
 bool Decorator::hasEmergencyPriority() const {
-	throw "Not yet implemented";
+	return this->patient->hasEmergencyPriority();
 }
 
-
+Decorator::~Decorator() {
+	delete this->patient;
+}

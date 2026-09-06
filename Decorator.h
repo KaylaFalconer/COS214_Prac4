@@ -13,7 +13,7 @@ class Decorator: public Vet
 	public:
 		Decorator(Vet* patient);
 
-		void print() const override;
+		void print() const override = 0;
 		bool hasEmergencyPriority() const override;
 
 		virtual ~Decorator();

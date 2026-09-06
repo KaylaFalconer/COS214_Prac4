@@ -1,17 +1,19 @@
+#include <iostream>
 using namespace std;
 
 #include "EmergencyPriority.h"
 #include "Vet.h"
 #include "Decorator.h"
 
-EmergencyPriority::EmergencyPriority(Vet* patient, int level) {
+EmergencyPriority::EmergencyPriority(Vet* patient, int level) : Decorator(patient) {
+	this->priorityLevel = level;
 }
 
 bool EmergencyPriority::hasEmergencyPriority() const {
-	throw "Not yet implemented";
+	return this->priorityLevel > 0;
 }
 
 void EmergencyPriority::print() const {
-	throw "Not yet implemented";
+	this->patient->print();
+	cout << "Emergency Priority Level: -- " << this->priorityLevel << " --" << endl;
 }
-

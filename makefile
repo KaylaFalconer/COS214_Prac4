@@ -1,32 +1,24 @@
-# Compiler and flags
+
 CXX = g++
-CXXFLAGS = -std=c++11 -Wall -g
-TARGET = taskforge
+CXXFLAGS = -std=c++11 -Wall -Wextra -g
 
-# Explicitly list only the .cpp files needed for the State pattern test
-SRCS = main.cpp \
-       Patient.cpp \
-       State.cpp \
-       Admitted.cpp \
-       UnderExamination.cpp \
-       InTreatment.cpp \
-       Discharged.cpp \
-       Vet.cpp
+TARGET = vet_system
 
-OBJS = $(SRCS:.cpp=.o)
+SOURCES = $(wildcard *.cpp)
+OBJECTS = $(SOURCES:.cpp=.o)
 
 all: $(TARGET)
 
-$(TARGET): $(OBJS)
+$(TARGET): $(OBJECTS)
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
 %.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 clean:
-	rm -f $(OBJS) $(TARGET)
+	rm -f $(OBJECTS) $(TARGET)
 
 run: $(TARGET)
 	./$(TARGET)
 
-.PHONY: all clean run
+.PHONY: all clean

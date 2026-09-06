@@ -14,6 +14,8 @@ class Admitted: public State
 		string getStateName() const override;
 		~Admitted();
 
+		
+
 };
 
 #endif

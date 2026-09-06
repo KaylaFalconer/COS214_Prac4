@@ -9,8 +9,9 @@ class Patient;
 class State
 {
 	private:
-		std::string stateName;
+		string stateName;
 	public:
+		
 		virtual void handle(Patient* patient) = 0;
 		virtual string getStateName() const = 0;
 		State(const std::string& stateName);

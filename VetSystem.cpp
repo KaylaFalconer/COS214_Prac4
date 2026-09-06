@@ -5,27 +5,58 @@ using namespace std;
 #include "Vet.h"
 #include "Iterator.h"
 #include "Patient.h"
+#include "FullIterator.h"
+#include "EmergencyPriorityIterator.h"
 
-VetSystem::VetSystem(Unit* root) {
+VetSystem::VetSystem(Unit *root)
+{
+	this->root = root;
 }
 
-void VetSystem::printAll() const {
-	throw "Not yet implemented";
+void VetSystem::printAll() const
+{
+	if (this->root)
+	{
+		this->root->print();
+	}
 }
 
-void VetSystem::showAllPatients() {
-	throw "Not yet implemented";
+void VetSystem::showAllPatients()
+{
+	Iterator* full = new FullIterator(this->root);
+	while (full->hasNext())
+	{
+		Vet* current = full->next();
+		if (current)
+		{
+			current->print();
+		}
+	}
+	delete full;
 }
 
-void VetSystem::showEmergencyPriorityPatients() {
-	throw "Not yet implemented";
+void VetSystem::showEmergencyPriorityPatients()
+{
+	Iterator* emergency = new EmergencyPriorityIterator(this->root);
+	while (emergency->hasNext())
+	{
+		Vet* current = emergency->next();
+		if (current)
+		{
+			current->print();
+		}
+	}
+	delete emergency;
 }
 
-void VetSystem::processPatient(Patient* patient) {
-	throw "Not yet implemented";
+void VetSystem::processPatient(Patient* patient)
+{
+	patient->examine();
+	patient->treat();
+	patient->discharge();
 }
 
-VetSystem::~VetSystem() {
-	throw "Not yet implemented";
+VetSystem::~VetSystem()
+{
+	delete this->root;
 }
-

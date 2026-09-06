@@ -5,6 +5,7 @@ using namespace std;
 #include "Patient.h"
 #include "State.h"
 #include "UnderExamination.h"
+#include  <iostream>
 
 
 Admitted::Admitted() : State("Admitted") {}
@@ -18,6 +19,7 @@ std::string Admitted::getStateName() const{
 }
 
 Admitted::~Admitted() {}
+
 
 
 
