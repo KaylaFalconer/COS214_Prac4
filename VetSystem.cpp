@@ -51,14 +51,15 @@ void VetSystem::showEmergencyPriorityPatients()
 
 void VetSystem::processPatient(Patient* patient)
 {
-	patient->examine();
-	patient->treat();
-	patient->discharge();
+	if (patient)
+	{
+		patient->advance();
+		patient->advance();
+		patient->advance();
+	}
 }
 
 VetSystem::~VetSystem()
 {
 	delete this->root;
 }
-
-//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
