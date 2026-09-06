@@ -1,10 +1,10 @@
 TARGET=main
-FLAGS= -g -std=c++11 -Werror -Wall -Iinclude -Isrc
+FLAGS= -g -std=c++11 -Werror -Wall
 CXX = g++
 OBJ_DIR=obj
 
-SOURCES = $(wildcard src/*.cpp)
-OBJECTS = $(SOURCES:src/%.cpp=$(OBJ_DIR)/%.o)
+SOURCES = $(wildcard *.cpp)
+OBJECTS = $(SOURCES:%.cpp=$(OBJ_DIR)/%.o)
 
 all : $(TARGET)
 
