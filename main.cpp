@@ -1,5 +1,7 @@
 #include "VetSystem.h"
 #include "Patient.h"
+#include "FullIterator.h"
+#include "EmergencyPriorityIterator.h"
 #include "Unit.h"
 #include "Isolation.h"
 #include "EmergencyPriority.h"
@@ -9,29 +11,7 @@ using namespace std;
 
 int main() {
 
-    std::cout<<"----------PATIENT STATE CHANGES DEMO---------------"<<std::endl;
-    // Create a patient
-    Patient* oreo2 = new Patient("P001", "Oreo", "Dog", 3);
-    oreo2->print();
-
-    std::cout << "\n--- Advancing through treatment ---\n";
-    oreo2->advance();   // Admitted to UnderExamination
-    oreo2->advance();   // UnderExamination to InTreatment
-    oreo2->advance();   // InTreatment to Discharged
-    oreo2->advance();   // Discharged to cannot advance
-
-    std::cout << "\n--- Re‑admitting the patient ---\n";
-    oreo2->readmit();   // Discharged to Admitted
-    oreo2->print();
-
-    std::cout << "\n--- Advancing again (new visit) ---\n";
-    oreo2->advance();   // Admitted to UnderExamination
-    oreo2->advance();   // UnderExamination to InTreatment
-    oreo2->advance();   // InTreatment to Discharged
-
-    delete oreo2;
-
-    std::cout<<"-------------AZOLILE TESTING VET SYSTEM----------------"<<std::endl;
+    std::cout<<"-----------TESTING VET SYSTEM-------------"<<std::endl;
     Unit* vetHospital = new Unit("Veterinary Hospital");
     Unit* emergencyDep = new Unit("Emergency Department");
     Unit* treatment1 = new Unit("Treatment Room 1");
@@ -81,5 +61,143 @@ int main() {
     cout << "--- Show Emergency Priority Patients ---" << endl;
     vs.showEmergencyPriorityPatients();
     
+    std::cout<<"--------------------RUNTIME SCENARIO 1-----------------------"<<std::endl;
+    // Build a fresh hierarchy
+    Unit* clinic = new Unit("City Clinic");
+    Unit* consultRoom = new Unit("Consultation Room");
+    Unit* treatmentArea = new Unit("Treatment Area");
+
+    // Create some patients
+    Patient* rocky = new Patient("R001", "Rocky", "Dog", 3);
+    Patient* whiskers = new Patient("R002", "Whiskers", "Cat", 2);
+    Patient* polly = new Patient("R003", "Polly", "Parrot", 1);
+
+    // Decorate Rocky with EmergencyPriority (level 4)
+    Vet* rockyPriority = new EmergencyPriority(rocky, 4);
+
+    // Add to the structure
+    consultRoom->add(rockyPriority);
+    consultRoom->add(whiskers);
+    treatmentArea->add(polly);
+
+    clinic->add(consultRoom);
+    clinic->add(treatmentArea);
+
+    // ---- Phase 1: Traversal and state change ----
+    std::cout << "\n--- Phase 1: Initial state and traversal ---\n";
+    FullIterator* it1 = new FullIterator(clinic);
+    std::cout << "All patients initially:\n";
+    while (it1->hasNext()) {
+        Vet* v = it1->next();
+        v->print();  // Rocky will show priority level
+    }
+    delete it1;
+
+    // Change Rocky's state: Admitted to UnderExamination to InTreatment
+    std::cout << "\n--- Changing Rocky's state (advance twice) ---\n";
+    rocky->advance();  // Admitted to UnderExamination
+    rocky->advance();  // UnderExamination to InTreatment
+    rocky->print();    // shows new state
+
+    // ---- Phase 2: Traversal after state change, but before structure change ----
+    std::cout << "\n--- Phase 2: Traversal after state change (state is now InTreatment) ---\n";
+    FullIterator* it2 = new FullIterator(clinic);
+    while (it2->hasNext()) {
+        Vet* v = it2->next();
+        v->print();  // Rocky's print will show InTreatment state
+    }
+    delete it2;
+
+    // ---- Phase 3: Structure change during an ongoing snapshot iteration ----
+    std::cout << "\n--- Phase 3: Structure change during snapshot traversal ---\n";
+    // Create a new iterator (snapshot taken now)
+    FullIterator* it3 = new FullIterator(clinic);
+    std::cout << "First two patients from snapshot:\n";
+    if (it3->hasNext()) { it3->next()->print(); }
+    if (it3->hasNext()) { it3->next()->print(); }
+
+    // Now change structure: add a new patient to the clinic
+    Patient* newbie = new Patient("R004", "Newbie", "Hamster", 1);
+    clinic->add(newbie);
+    std::cout << "\nAdded new patient 'Newbie' to the clinic during traversal.\n";
+
+    // Continue the same iterator
+    std::cout << "Remaining patients from the snapshot (Newbie will NOT appear):\n";
+    while (it3->hasNext()) {
+        Vet* v = it3->next();
+        v->print();
+    }
+    delete it3;
+
+    // Show that a new iterator will see Newbie
+    std::cout << "\nNow a fresh iterator (sees Newbie because it's a new snapshot):\n";
+    FullIterator* it4 = new FullIterator(clinic);
+    while (it4->hasNext()) {
+        Vet* v = it4->next();
+        v->print();
+    }
+    delete it4;
+    delete clinic; 
+
+    std::cout<<"\n\n\n"<<std::endl;
+
+
+    std::cout<<"----------PATIENT STATE CHANGES DEMO---------------"<<std::endl;
+    // Create a patient
+    Patient* oreo2 = new Patient("P001", "Oreo", "Dog", 3);
+    oreo2->print();
+
+    std::cout << "\n--- Advancing through treatment ---\n";
+    oreo2->advance();   // Admitted to UnderExamination
+    oreo2->advance();   // UnderExamination to InTreatment
+    oreo2->advance();   // InTreatment to Discharged
+    oreo2->advance();   // Discharged to cannot advance
+
+    std::cout << "\n--- Re‑admitting the patient ---\n";
+    oreo2->readmit();   // Discharged to Admitted
+    oreo2->print();
+
+    std::cout << "\n--- Advancing again (new visit) ---\n";
+    oreo2->advance();   // Admitted to UnderExamination
+    oreo2->advance();   // UnderExamination to InTreatment
+    oreo2->advance();   // InTreatment to Discharged
+
+    delete oreo2;
+
+    std::cout<<"\n\n\n-------------------ITERATORS DEMO-------------------"<<std::endl;
+    //Build a hierarchy
+    Unit* hospital = new Unit("Demo Hospital");
+    Unit* er = new Unit("Emergency Room");
+    Unit* ward = new Unit("General Ward");
+
+    // Create some normal patients
+    Patient* fluffy = new Patient("D001", "Fluffy", "Cat", 2);
+    Patient* spot   = new Patient("D002", "Spot", "Dog", 4);
+    Patient* tweety = new Patient("D003", "Tweety", "Bird", 1);
+
+    // Wrap two of them with EmergencyPriority
+    Vet* fluffyPriority = new EmergencyPriority(fluffy, 5);   // level 5
+    Vet* spotPriority   = new EmergencyPriority(spot, 3);     // level 3
+    // Tweety remains without priority
+
+    // Add them to the departments
+    er->add(fluffyPriority);
+    er->add(spotPriority);
+    ward->add(tweety);
+
+    // Build the tree
+    hospital->add(er);
+    hospital->add(ward);
+
+    //Create a VetSystem for this new tree
+    VetSystem demoSystem(hospital);
+
+    std::cout << "\n--- All patients (FullIterator) ---\n";
+    demoSystem.showAllPatients();
+
+    std::cout << "\n--- Emergency priority patients ---\n";
+    demoSystem.showEmergencyPriorityPatients();
+
+
     return 0;
 }

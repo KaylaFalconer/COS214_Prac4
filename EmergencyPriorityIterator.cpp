@@ -7,17 +7,41 @@ using namespace std;
 #include "Iterator.h"
 
 EmergencyPriorityIterator::EmergencyPriorityIterator(Unit* root) {
+	_patients.clear();
+	_currentPatient=0;
+	if(root){
+		getEmergencyPatients(root);
+	}
 }
 
 Vet* EmergencyPriorityIterator::next() {
-	throw "Not yet implemented";
+	if (hasNext())
+	{
+		return _patients[_currentPatient++];
+	}
+	else
+	{
+		return nullptr;
+	}
+
 }
 
 bool EmergencyPriorityIterator::hasNext() const {
-	throw "Not yet implemented";
+	return _currentPatient < _patients.size();
 }
 
 void EmergencyPriorityIterator::getEmergencyPatients(Vet* vet) {
-	throw "Not yet implemented";
+	if(!vet) return;
+	Unit *unit=dynamic_cast<Unit*>(vet);
+	if(unit){
+		for(Vet* child: unit->children){
+			getEmergencyPatients(child);
+		}
+	}
+	else{
+		if(vet->hasEmergencyPriority()){
+			_patients.push_back(vet);
+		}
+	}
 }
 

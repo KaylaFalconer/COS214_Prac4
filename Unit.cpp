@@ -56,12 +56,12 @@ void Unit::print() const
 
 Iterator* Unit::createFullIterator()
 {
-	return new FullIterator(this);
+	return new FullIterator(this); //shows starting point of iteration
 }
 
 Iterator* Unit::createEmergencyPriorityIterator()
 {
-	return new EmergencyPriorityIterator(this);
+	return new EmergencyPriorityIterator(this);//starting point of iteration
 }
 
 Unit::~Unit()
@@ -72,3 +72,4 @@ Unit::~Unit()
 	}
 	this->children.clear();
 }
+
