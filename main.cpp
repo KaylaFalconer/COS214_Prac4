@@ -1,6 +1,9 @@
 #include "VetSystem.h"
 #include "Patient.h"
+#include "FullIterator.h"
+#include "EmergencyPriorityIterator.h"
 #include "Unit.h"
+#include "EmergencyPriority.h"
 #include <iostream>
 using namespace std;
 
@@ -28,7 +31,41 @@ int main() {
 
     delete oreo2;
 
-    std::cout<<"AZOLILE TESTING VET SYSTEM"<<std::endl;
+    std::cout<<"\n\n\n-------------------ITERATORS DEMO-------------------"<<std::endl;
+    //Build a hierarchy
+    Unit* hospital = new Unit("Demo Hospital");
+    Unit* er = new Unit("Emergency Room");
+    Unit* ward = new Unit("General Ward");
+
+    // Create some normal patients
+    Patient* fluffy = new Patient("D001", "Fluffy", "Cat", 2);
+    Patient* spot   = new Patient("D002", "Spot", "Dog", 4);
+    Patient* tweety = new Patient("D003", "Tweety", "Bird", 1);
+
+    // Wrap two of them with EmergencyPriority
+    Vet* fluffyPriority = new EmergencyPriority(fluffy, 5);   // level 5
+    Vet* spotPriority   = new EmergencyPriority(spot, 3);     // level 3
+    // Tweety remains without priority
+
+    // Add them to the departments
+    er->add(fluffyPriority);
+    er->add(spotPriority);
+    ward->add(tweety);
+
+    // Build the tree
+    hospital->add(er);
+    hospital->add(ward);
+
+    //Create a VetSystem for this new tree
+    VetSystem demoSystem(hospital);
+
+    std::cout << "\n--- All patients (FullIterator) ---\n";
+    demoSystem.showAllPatients();
+
+    std::cout << "\n--- Emergency priority patients ---\n";
+    demoSystem.showEmergencyPriorityPatients();
+
+    std::cout<<"-----------TESTING VET SYSTEM-------------"<<std::endl;
     Unit* vetHospital = new Unit("Veterinary Hospital");
     Unit* emergencyDep = new Unit("Emergency Department");
     Unit* treatment1 = new Unit("Treatment Room 1");

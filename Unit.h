@@ -11,6 +11,8 @@ class Iterator;
 
 class Unit: public Vet
 {
+	friend class FullIterator;
+	friend class EmergencyPriorityIterator;
 	protected:
 		vector<Vet*> children;
 

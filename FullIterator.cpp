@@ -7,17 +7,38 @@ using namespace std;
 #include "Iterator.h"
 
 FullIterator::FullIterator(Unit* root) {
+	patients.clear();
+	currentItem=0;
+	if(root){
+		getPatients(root);
+	}
 }
 
 Vet* FullIterator::next() {
-	throw "Not yet implemented";
+	if (hasNext())
+	{
+		return patients[currentItem++];
+	}
+	else
+	{
+		return nullptr;
+	}
 }
 
 bool FullIterator::hasNext() const {
-	throw "Not yet implemented";
+	return currentItem < patients.size();
 }
 
 void FullIterator::getPatients(Vet* vet) {
-	throw "Not yet implemented";
+	if(!vet) return;
+	Unit *unit=dynamic_cast<Unit*>(vet);
+	if(unit){
+		for(Vet* child: unit->children){
+			getPatients(child);
+		}
+	}
+	else{
+		patients.push_back(vet);
+	}
 }
 
