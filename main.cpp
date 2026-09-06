@@ -3,7 +3,9 @@
 #include "FullIterator.h"
 #include "EmergencyPriorityIterator.h"
 #include "Unit.h"
+#include "Isolation.h"
 #include "EmergencyPriority.h"
+#include "ContinuousMonitoring.h"
 #include <iostream>
 using namespace std;
 
@@ -18,27 +20,51 @@ int main() {
     Unit* theatre1 = new Unit("Theatre 1");
     Unit* generalCare = new Unit("General Care");
     Unit* wardA = new Unit("Ward A");
-    Patient* oreo = new Patient("010", "Oreo", "Canis lupus familiaris", 4);
-    Patient* max = new Patient("011", "Max", "Felis catus", 2);
-    Patient* buddy = new Patient("012", "Buddy", "Psittacus", 5);
-    Patient* milo = new Patient("013", "Milo", "Canis lupus familiaris", 1);
-    Patient* lucky = new Patient("014", "Lucky", "Felis catus", 3);
+    Patient* oreo = new Patient("010", "Oreo", "Canis lupus familiaris -> Dog", 4);
+    Patient* max = new Patient("011", "Max", "Felis catus -> Cat", 2);
+    Patient* buddy = new Patient("012", "Buddy", "Psittacus -> Parrot", 5);
+    Patient* milo = new Patient("013", "Milo", "Canis lupus familiaris -> Dog", 1);
+    Patient* lucky = new Patient("014", "Lucky", "Felis catus -> Cat", 3);
+    VetSystem vs(vetHospital);
 
-    treatment1->add(oreo);
+    Vet* isolationLucky = new Isolation(lucky, "Terminally ill and possibly contagious. Rabies as well.");
+    cout << "\nLucky in isolation: \n\t"; isolationLucky->print(); cout << endl;
+
+    Vet* decorateBuddy = new Isolation(buddy, "Bird Flu spread being contained.");
+    decorateBuddy = new ContinuousMonitoring(decorateBuddy, 4);
+    decorateBuddy = new EmergencyPriority(decorateBuddy, 3);
+    cout << "\nBuddy in Emergency, Under continuous monitoring & in Isolation: \n\t"; decorateBuddy->print(); cout << endl;
+
+    Vet* emergencyOreo = new EmergencyPriority(oreo, 6);
+    cout << "\nOreo in emergency: \n\t"; emergencyOreo->print(); cout << endl;
+
+    treatment1->add(emergencyOreo);
     treatment1->add(max);
-    treatment2->add(buddy);
+    treatment2->add(decorateBuddy);
     emergencyDep->add(treatment1);
+    emergencyDep->add(treatment2);
     
     theatre1->add(milo);
     surgeryDep->add(theatre1);
 
-    wardA->add(lucky);
+    wardA->add(isolationLucky);
     generalCare->add(wardA);
 
     vetHospital->add(emergencyDep);
     vetHospital->add(surgeryDep);
     vetHospital->add(generalCare);
 
+    
+
+    cout << "--- Print All (Whole Tree Structure) ---" << endl;
+    vs.printAll(); cout << endl;
+
+    cout << "--- Show All Patients ---" << endl;
+    vs.showAllPatients(); cout << endl;
+
+    cout << "--- Show Emergency Priority Patients ---" << endl;
+    vs.showEmergencyPriorityPatients(); cout << endl;
+    
     std::cout<<"--------------------RUNTIME SCENARIO 1-----------------------"<<std::endl;
     // Build a fresh hierarchy
     Unit* clinic = new Unit("City Clinic");

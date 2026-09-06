@@ -8,12 +8,12 @@ using namespace std;
 #include "Vet.h"
 #include "Admitted.h"
 
-Patient::Patient(const string& id, const string& name, const string& type, int age) :id(id), type(type), age(age), Vet(name) {
+Patient::Patient(const string& id, const string& name, const string& type, int age) :Vet(name), id(id), type(type), age(age) {
 	this->state=new Admitted();
 }
 
 void Patient::print() const {
-	std::cout<<"Patient Name: "<<name<<" (ID: "<<id<<", Type: "<<type<<",Age: "<<age<<")\n"<<"Current state: "<<state->getStateName()<<std::endl;
+	std::cout<<"Patient Name: "<<name<<" (ID: "<<id<<", Type: "<<type<<", Age: "<<age<<")\n"<<"Current state: "<<state->getStateName()<<endl;
 }
 
 void Patient::advance() {
@@ -21,12 +21,13 @@ void Patient::advance() {
 		state->handle(this);
 	}
 }
+
 void Patient::setState(State* state) {
 	if(state!=nullptr){
 		delete this->state;
 	}
 	this->state = state;
-	cout<<"Patient "<<name<<" state changed to "<<state->getStateName()<<std::endl;
+	cout<<"Patient "<<name<<" state changed to "<<state->getStateName()<<endl;
 }
 
 std::string Patient::getStateName() const {
@@ -46,17 +47,16 @@ Patient::~Patient() {
 void Patient::readmit() {
 	if(getStateName() == "Discharged") {
 		setState(new Admitted());
-		cout<<"Patient "<<name<<" has been readmitted."<<std::endl;
+		cout<<"Patient "<<name<<" has been readmitted."<<endl;
 	} else {
-		cout<<"Patient "<<name<<" cannot be readmitted as they are not discharged."<<std::endl;
+		cout<<"Patient "<<name<<" cannot be readmitted as they are not discharged."<<endl;
 	}
 }
 
-std::string Patient::getName() const {
+string Patient::getName() const {
 	return name;
 }
 
-std::string Patient::getId() const {
+string Patient::getId() const {
 	return id;
 }
-

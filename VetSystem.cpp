@@ -23,10 +23,10 @@ void VetSystem::printAll() const
 
 void VetSystem::showAllPatients()
 {
-	Iterator* full = new FullIterator(this->root);
+	Iterator *full = new FullIterator(this->root);
 	while (full->hasNext())
 	{
-		Vet* current = full->next();
+		Vet *current = full->next();
 		if (current)
 		{
 			current->print();
@@ -37,10 +37,10 @@ void VetSystem::showAllPatients()
 
 void VetSystem::showEmergencyPriorityPatients()
 {
-	Iterator* emergency = new EmergencyPriorityIterator(this->root);
+	Iterator *emergency = new EmergencyPriorityIterator(this->root);
 	while (emergency->hasNext())
 	{
-		Vet* current = emergency->next();
+		Vet *current = emergency->next();
 		if (current)
 		{
 			current->print();
@@ -49,9 +49,10 @@ void VetSystem::showEmergencyPriorityPatients()
 	delete emergency;
 }
 
-void VetSystem::processPatient(Patient* patient)
+void VetSystem::processPatient(Patient *patient)
 {
-	if(patient){
+	if (patient)
+	{
 		patient->advance();
 		patient->advance();
 		patient->advance();

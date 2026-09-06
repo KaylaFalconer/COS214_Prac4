@@ -1,24 +1,26 @@
-
+TARGET=taskforge
+FLAGS= -g -std=c++11 -Werror -Wall
 CXX = g++
-CXXFLAGS = -std=c++11 -Wall -Wextra -g
-
-TARGET = vet_system
+OBJ_DIR=obj
 
 SOURCES = $(wildcard *.cpp)
-OBJECTS = $(SOURCES:.cpp=.o)
+OBJECTS = $(SOURCES:%.cpp=$(OBJ_DIR)/%.o)
 
-all: $(TARGET)
+all : $(TARGET)
 
 $(TARGET): $(OBJECTS)
-	$(CXX) $(CXXFLAGS) -o $@ $^
+	$(CXX) $(FLAGS) $(OBJECTS) -o $(TARGET)
 
-%.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c -o $@ $<
+$(OBJ_DIR)/%.o: %.cpp
+	mkdir -p $(OBJ_DIR)
+	$(CXX) $(FLAGS) -c $< -o $@
 
-clean:
-	rm -f $(OBJECTS) $(TARGET)
-
-run: $(TARGET)
+run : $(TARGET)
 	./$(TARGET)
 
-.PHONY: all clean
+mem : $(TARGET)
+	valgrind --leak-check=full --track-origins=yes ./$(TARGET) 2> memory.log 
+
+clean:
+	rm -rf $(OBJ_DIR) $(TARGET) 
+	clear
