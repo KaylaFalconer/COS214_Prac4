@@ -13,6 +13,10 @@ Patient::Patient(const string& id, const string& name, const string& type, int a
 }
 
 void Patient::print() const {
+	if(state == nullptr) {
+		cout << "Patient " << name << " has no state assigned." << endl;
+		return;
+	}
 	std::cout<<"Patient Name: "<<name<<" (ID: "<<id<<", Type: "<<type<<", Age: "<<age<<")\n"<<"Current state: "<<state->getStateName()<<endl;
 }
 
@@ -27,7 +31,11 @@ void Patient::setState(State* state) {
 		delete this->state;
 	}
 	this->state = state;
-	cout<<"Patient "<<name<<" state changed to "<<state->getStateName()<<endl;
+	if(state != nullptr) {
+		cout<<"Patient "<<name<<" state changed to "<<state->getStateName()<<endl;
+	} else {
+		cout<<"Patient "<<name<<" state has been set to nullptr."<<endl;
+	}
 }
 
 std::string Patient::getStateName() const {
