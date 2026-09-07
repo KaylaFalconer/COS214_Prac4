@@ -1,7 +1,8 @@
 # COS214_Prac4
 # Commands to reproduce build and exeute the program
 # 1. Build the Docker image (using the Dockerfile)
-docker build -t taskforge-image .
+ docker build -t taskforge-image . --no-cache
+
 
 # 2. Run the program
 docker run --rm taskforge-image

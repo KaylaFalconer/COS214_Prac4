@@ -22,7 +22,7 @@ WORKDIR /app
 COPY . .
 
 # Compile the program inside the container
-RUN make
+RUN make clean && make
 
 # The command to run when the container starts
 CMD ["./taskforge"]
