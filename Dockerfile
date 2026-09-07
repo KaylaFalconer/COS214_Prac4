@@ -18,7 +18,7 @@ RUN apt-get update && \
 # Set the working directory inside the container
 WORKDIR /app
 
-# Copy EVERYTHING from your local project into the container's /app folder
+# Copy everything from the local project into the container's /app folder
 COPY . .
 
 # Compile the program inside the container
