@@ -7,6 +7,7 @@
 #include "EmergencyPriority.h"
 #include "ContinuousMonitoring.h"
 #include <iostream>
+#include <string>
 using namespace std;
 
 int main() {
@@ -202,6 +203,35 @@ int main() {
     std::cout << "\n--- Emergency priority patients ---\n";
     demoSystem.showEmergencyPriorityPatients();
 
+    std::cout << "\n\n--- INTERACTIVE PORTION | PATIENT CHECK-IN ---\n";
+    std::string name;
+    std::string type;
+    int age;
+
+    std::cout << "Receptionist: Welcome to the Veterinary Hospital!\n";
+    std::cout << "Enter patient name: ";
+    std::cin >> name;
+
+    std::cout << "Enter animal type: ";
+    std::cin >> type;
+
+    std::cout << "Enter patient age: ";
+    std::cin >> age;
+
+    Patient* newPatient = new Patient("I001", name, type, age);
+
+    std::cout << "\nPatient has been admitted:\n";
+    newPatient->print();
+
+    std::cout << "\nAdvancing patient into treatment...\n";
+    newPatient->advance();
+    newPatient->print();
+
+    std::cout << "\nDischarging patient...\n";
+    newPatient->advance();
+    newPatient->print();
+
+    delete newPatient;
 
     return 0;
 }
