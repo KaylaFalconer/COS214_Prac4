@@ -23,4 +23,3 @@ mem : $(TARGET)
 
 clean:
 	rm -rf $(OBJ_DIR) $(TARGET) 
-	clear
